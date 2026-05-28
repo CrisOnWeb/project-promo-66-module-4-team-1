@@ -30,11 +30,24 @@ const createProject = async (data) => {
 const getProjectById = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`);
-    const result = await response.json();
-    return result;
+    
+    // Si la respuesta no es correcta (404, 500, etc)
+    if (!response.ok) {
+      return { success: false, error: `Error ${response.status}: Proyecto no encontrado` };
+    }
+
+    // Comprobamos si el contenido es JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const result = await response.json();
+      return { ...result, success: true };
+    } else {
+      // Si no es JSON (es HTML), devolvemos éxito para que se pueda abrir la URL
+      return { success: true, isHtml: true };
+    }
   } catch (error) {
     console.error(`Error al obtener el proyecto ${id}:`, error);
-    return { success: false, error: 'Error de red o servidor' };
+    return { success: false, error: 'Error de red o el proyecto ya no existe' };
   }
 };
 

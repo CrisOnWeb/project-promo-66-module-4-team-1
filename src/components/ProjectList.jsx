@@ -1,6 +1,6 @@
 import Card from './Card';
 
-function ProjectList({ projects }) {
+function ProjectList({ projects, onCardClick }) {
   if (projects.length === 0) {
     return (
       <section className="project-list project-list--empty">
@@ -14,7 +14,10 @@ function ProjectList({ projects }) {
       <ul className="project-list__items">
         {projects.map((project) => (
           <li key={project.id} className="project-list__item">
-            <Card data={project} />
+            <Card 
+              data={project} 
+              onClick={() => onCardClick && onCardClick(project)} 
+            />
           </li>
         ))}
       </ul>

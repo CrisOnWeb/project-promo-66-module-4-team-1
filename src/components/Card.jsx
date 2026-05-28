@@ -1,9 +1,22 @@
-function Card({ data }) {
+function Card({ data, onClick }) {
   const { name, slogan, technologies, repo, demo, desc, autor, job, photo } =
     data;
 
+  const handleClick = (ev) => {
+    // Evitar que el clic en los enlaces de demo/repo dispare el clic de la tarjeta
+    if (ev.target.tagName === 'A' || ev.target.closest('a')) {
+      return;
+    }
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <article className="card">
+    <article 
+      className={`card ${onClick ? 'card--interactive' : ''}`} 
+      onClick={handleClick}
+    >
       <h2 className="card__projectTitle">
         <span className="card__projectTitle--text">Personal project card</span>
       </h2>
