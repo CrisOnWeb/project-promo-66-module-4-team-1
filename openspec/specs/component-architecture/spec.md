@@ -1,11 +1,11 @@
 ## Requirements
 
 ### Requirement: Modular Component Architecture
-The application SHALL be refactored into a modular architecture using React components. Each major section of the UI (Header, Footer, Form, Preview) MUST be its own functional component.
+The application SHALL be refactored into a modular architecture using React components. Each major section of the UI (Header, Footer, LandingPage, CreatePage, Form, Preview) MUST be its own functional component.
 
 #### Scenario: Successful component structure
 - **WHEN** the project is inspected
-- **THEN** separate files for Header, Footer, CreatePage, Form, Preview, and Card exist in `src/components/`
+- **THEN** separate files for Header, Footer, LandingPage, CreatePage, Form, Preview, and Card exist in `src/components/`
 
 ### Requirement: Reusable UI Elements (Atomic Components)
 The application SHALL utilize small, reusable components for common UI elements such as Buttons and Headings to ensure consistency.

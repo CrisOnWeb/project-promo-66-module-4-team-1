@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './styles/App.scss';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CreatePage from './components/CreatePage';
+import LandingPage from './components/LandingPage';
 import storage from './services/localStorage';
 import api from './services/api';
 
@@ -21,13 +22,10 @@ const initialData = {
 
 function App() {
   const [data, setData] = useState(initialData);
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState(() => storage.get());
   const [apiResponse, setApiResponse] = useState(null);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setProjects(storage.get());
-  }, []);
+  const [view, setView] = useState('landing');
 
   const handleChange = (ev) => {
     const { name, value } = ev.target;
@@ -63,9 +61,15 @@ function App() {
     }
   };
 
+  const handleNavigateToCreate = () => setView('create');
+  const handleNavigateToLanding = (ev) => {
+    if (ev) ev.preventDefault();
+    setView('landing');
+  };
+
   return (
     <div className="container">
-      <Header />
+      <Header onNavigate={handleNavigateToLanding} />
       {apiResponse && (
         <div className="success-message">
           <p>¡Proyecto guardado con éxito!</p>
@@ -75,12 +79,21 @@ function App() {
         </div>
       )}
       {error && <p className="error-message">{error}</p>}
-      <CreatePage
-        data={data}
-        handleChange={handleChange}
-        updateData={updateData}
-        handleSave={handleSave}
-      />
+      
+      {view === 'landing' ? (
+        <LandingPage 
+          projects={projects} 
+          onNavigateToCreate={handleNavigateToCreate} 
+        />
+      ) : (
+        <CreatePage
+          data={data}
+          handleChange={handleChange}
+          updateData={updateData}
+          handleSave={handleSave}
+          onNavigateToLanding={handleNavigateToLanding}
+        />
+      )}
       <Footer />
     </div>
   );
