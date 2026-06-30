@@ -28,4 +28,20 @@ server.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
+// Conexión con la base de datos
+const getConnection = async () => {
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST || '127.0.0.1',
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD,
+  });
+
+  console.log(
+    `Conexión establecida con la base de datos (identificador = ${connection.threadId})`,
+  );
+
+  return connection;
+};
+
 // endpoints
