@@ -32,6 +32,7 @@ server.listen(port, () => {
 const getConnection = async () => {
   const connection = await mysql.createConnection({
     host: process.env.DB_HOST || '127.0.0.1',
+    port: process.env.DB_PORT,
     database: process.env.DB_NAME,
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD,
@@ -45,3 +46,32 @@ const getConnection = async () => {
 };
 
 // endpoints
+server.get('/api/projects', async (req, res) => {
+  let connection;
+  try {
+    const sql = 'SELECT * FROM projects';
+
+    connection = await getConnection();
+    const [results] = await connection.query(sql);
+    console.log(results);
+
+    res.status(200).json({
+      success: true,
+      results: results,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error',
+    });
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
+  }
+});
+
+server.post('/api/projects', async (req, res) => {});
+
+server.get('/api/projects/:id', async (req, res) => {});

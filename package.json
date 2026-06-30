@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "deploy": "rm -rf public ; cd FRONTEND/ && npm run build && mv docs ../public"
+    "deploy": "rm -rf public && cd FRONTEND/ && npm run build && mv docs ../public"
   },
   "dependencies": {
     "cors": "^2.8.6",
